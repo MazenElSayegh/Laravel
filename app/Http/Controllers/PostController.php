@@ -59,11 +59,22 @@ class PostController extends Controller
 
     public function store()
     {
-        return view('posts.index');
+        return redirect()->route('posts.index');
     }
 
-    public function update()
+    public function edit($id)
+    
     {
-        return view('posts.update');
+        return view('posts.edit',["id"=>$id]);
+    }
+
+    public function update(){
+        
+        return redirect()->route('posts.index');
+        
+    }
+
+    public function destroy($id){
+        return redirect()->route('posts.index');
     }
 }

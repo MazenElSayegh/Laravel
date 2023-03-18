@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +25,13 @@ Route::get( '/posts/create', [PostController::class, 'create'])->name('posts.cre
 
 Route::post('/posts',[PostController::class, 'store'])->name('posts.store');
 
-Route::get('/posts/update', [PostController::class, 'update'])->name('posts.update');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+Route::put('/posts/{post}', [PostController::class,"update"])->name("posts.update");
 
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 
 
