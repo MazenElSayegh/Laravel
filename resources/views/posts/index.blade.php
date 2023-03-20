@@ -21,14 +21,22 @@
 
         @foreach($posts as $post)
             <tr>
-                <td>{{$post['id']}}</td>
-                <td>{{$post['title']}}</td>
-                <td>{{$post['posted_by']}}</td>
-                <td>{{$post['created_at']}}</td>
+                <td>{{$post->id}}</td>
+                <td>{{$post->title}}</td>
+                @if($post->user)
+                    <td>{{$post->user->name}}</td>
+                @else 
+                    <td>Not Found</td>
+                @endif
+                <td>{{$post->created_at->format("Y-m-d")}}</td>
                 <td>
                     <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
                     <a href="{{route('posts.edit',$post["id"]),"/edit"}}" class="btn btn-primary">Edit</a>
-                    <a href="" class="btn btn-danger">Delete</a>
+                    <form action="{{route('posts.destroy',$post['id'])}}" style="display: inline" method="Post">
+                        @csrf
+                        @method("DELETE")
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                    </form>
                 </td>
             </tr>
         @endforeach
@@ -37,5 +45,6 @@
 
         </tbody>
     </table>
+    {{$posts->links('pagination::bootstrap-4')}}
 
 @endsection
