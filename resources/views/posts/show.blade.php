@@ -71,7 +71,7 @@
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>
     </div> 
-    {{-- @dd($post->image_path) --}}
-    {{-- <img src="../../storage/app/{{$post->image_path}}"> --}}
+    {{-- @dd(asset($post->image_path)) --}}
+    <img src="{{asset($post->image_path)}}" alt="err" class="">
 
 @endsection
