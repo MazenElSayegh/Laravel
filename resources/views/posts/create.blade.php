@@ -16,7 +16,7 @@
 </div>
 @endif
 
-<form action="{{route('posts.store')}}" method="POST">
+<form action="{{route('posts.store')}}" method="POST" enctype="multipart/form-data">
   @csrf
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Title</label>
@@ -30,6 +30,12 @@
       <label for="exampleInputEmail1" class="form-label">Slug</label>
       <input name="slug" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
     </div>     --}}
+
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Select image to upload:</label>
+        <input name="fileToUpload" type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div>
+
     <div class="mb-3">
       <label for="exampleFormControlTextarea1" class="form-label">Post Creator</label>
       <select name="post_creator" class="form-control">

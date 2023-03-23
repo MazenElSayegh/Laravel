@@ -29,19 +29,23 @@
             Comments
         </div>
         <div class="card-body">
-            {{-- @dd($post->comments) --}}
-            @foreach($post->comments as $comment)
-            {{-- <div style="border: solid 1px grey; margin: 10px">
-                <p>{{$comment->user->name}}:&nbsp;"<i>{{$comment->body}}</i>"</p>
-            </div> --}}
-            <div class="card" style="margin: 10px">
-                <div class="card-body bg-dark p-2 text-white bg-opacity-75">
-                    <p >{{$comment->user->name}}&nbsp; <i style="font-size: 12px">{{$comment->created_at->format("d/m/Y")}}</i></p>
-                    <p>"<i>{{$comment->body}}</i>"</p>
+            {{-- @dd(count($post->comments)) --}}
+            @if(count($post->comments) > 0)
+                @foreach($post->comments as $comment)
+                <div class="card" style="margin: 10px">
+                    <div class="card-body bg-dark p-2 text-white bg-opacity-75 rounded-3">
+                        <p >{{$comment->user->name}}&nbsp; <i style="font-size: 12px">{{$comment->created_at->format("d/m/Y")}}</i></p>
+                        <p>"<i>{{$comment->body}}</i>"</p>
+                    </div>
                 </div>
-              </div>
-                {{-- <p></p> --}}
-            @endforeach
+                @endforeach
+            @else
+            <div class="card" style="margin: 10px">
+                <div class="card-body bg-dark p-2 text-white bg-opacity-75 rounded-3">
+                    <p ><i>No comments</i></p>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -67,5 +71,7 @@
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>
     </div> 
+    {{-- @dd($post->image_path) --}}
+    {{-- <img src="../../storage/app/{{$post->image_path}}"> --}}
 
 @endsection

@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Http\Requests\UpdatePostRequest;
 use App\Jobs\PruneOldPostsJob;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -45,12 +47,19 @@ class PostController extends Controller
         // $allData=$request->all();
 
         // dd($title,$description,$postCreator);
-        Post::create([
+        $post=Post::create([
             'title'=>$title,
             'description'=>$description,
             'user_id'=>$postCreator,
         ]);
-        $slug = SlugService::createSlug(Post::class, 'slug', request()->title);
+        // $slug = SlugService::createSlug(Post::class, 'slug', request()->title);
+        if ($request->hasFile('fileToUpload')) {
+            $image = $request->file('fileToUpload');
+            $filename = $image->getClientOriginalName();
+            $path = Storage::putFileAs('postsImages', $image, $filename);
+            $post->image_path = $path;
+            $post->save();
+        }
 
         return to_route('posts.index');
     }
@@ -65,7 +74,20 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request,$id)
     {
-        
+        // dd($request);
+        // dd($request['id'],$id,request()->id);
+        $post = Post::findOrFail($id);
+
+        if ($request->hasFile('fileToUpload')) {
+            if ($post->image_path) {
+                Storage::delete($post->image_path);
+            }
+            $image = $request->file('fileToUpload');
+            $filename = $image->getClientOriginalName();
+            $path = Storage::putFileAs('postsImages', $image, $filename);
+            $post->image_path = $path;
+            $post->save();
+        }
 
         $title= request()->title;
         $description= request()->description;
@@ -79,15 +101,21 @@ class PostController extends Controller
             'title'=>$title,
             'description'=>$description,
             'user_id'=>$postCreator,
+            'slug' => Str::slug($title),
         ]);   
+
         return redirect()->route('posts.index');        
     }
 
     public function destroy($id)
     {
-        Post::destroy($id);
-        return redirect()->route('posts.index');
+    $post = Post::findOrFail($id);
+    Post::destroy($id);
+    if ($post->image_path && Storage::exists($post->image_path)) {
+        Storage::delete($post->image_path);
     }
+    return redirect()->route('posts.index');
+}
 
     public function removeOldPosts()
     {
