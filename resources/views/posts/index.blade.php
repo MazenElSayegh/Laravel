@@ -14,6 +14,7 @@
             <th scope="col">Title</th>
             <th scope="col">Posted By</th>
             <th scope="col">Created At</th>
+            <th scope="col">Slug</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -29,8 +30,9 @@
                     <td>Not Found</td>
                 @endif
                 <td>{{$post->created_at->format("Y-m-d")}}</td>
+                <td>{{$post->slug}}</td>
                 <td>
-                    <a href="{{route('posts.show', $post['id'])}}" class="btn btn-info">View</a>
+                    <a href="{{route('posts.show', [$post['id'],$post['slug']])}}" class="btn btn-info">View</a>
                     <a href="{{route('posts.edit',$post["id"]),"/edit"}}" class="btn btn-primary">Edit</a>
                     <form action="{{route('posts.destroy',$post['id'])}}" style="display: inline" method="Post">
                         @csrf

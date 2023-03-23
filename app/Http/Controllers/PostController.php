@@ -1,15 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use App\Http\Requests\UpdatePostRequest;
+use App\Jobs\PruneOldPostsJob;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $allPosts = Post::paginate(7);
+        $allPosts = Post::paginate(5);
         // dd($allPosts);
 
         return view('posts.index', ['posts' => $allPosts]);
@@ -31,7 +37,7 @@ class PostController extends Controller
         return view('posts.create',['users'=>$users]);
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $title= request()->title;
         $description= request()->description;
@@ -44,6 +50,7 @@ class PostController extends Controller
             'description'=>$description,
             'user_id'=>$postCreator,
         ]);
+        $slug = SlugService::createSlug(Post::class, 'slug', request()->title);
 
         return to_route('posts.index');
     }
@@ -56,8 +63,10 @@ class PostController extends Controller
         return view('posts.edit',['users'=>$users], ['post'=>$post]);
     }
 
-    public function update($id)
+    public function update(UpdatePostRequest $request,$id)
     {
+        
+
         $title= request()->title;
         $description= request()->description;
         $postCreator=request()->post_creator;
@@ -78,5 +87,14 @@ class PostController extends Controller
     {
         Post::destroy($id);
         return redirect()->route('posts.index');
+    }
+
+    public function removeOldPosts()
+    {
+        // dispatch(new PruneOldPostsJob);
+        
+        PruneOldPostsJob::dispatch();
+        
+        return to_route('posts.index');
     }
 }
