@@ -10,7 +10,6 @@ use App\Jobs\PruneOldPostsJob;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -56,10 +55,9 @@ class PostController extends Controller
         if ($request->hasFile('fileToUpload')) {
             $image = $request->file('fileToUpload');
             $filename = $image->getClientOriginalName();
-            // $path = Storage::putFileAs('postsImages', $image, $filename);
-            // $post->image_path = $path;
+            // $path = Storage::putFileAs('public/postsImages', $image, $filename);
             $path= $request->file('fileToUpload')->storeAs('postsImages',$filename,'public');
-            $post->image_path = '/storage/'.$path;
+            $post->image_path =$path;
             $post->save();
         }
 
@@ -82,14 +80,14 @@ class PostController extends Controller
 
         if ($request->hasFile('fileToUpload')) {
             if ($post->image_path) {
-                Storage::delete($post->image_path);
+                Storage::delete("public/" . $post->image_path);
             }
             $image = $request->file('fileToUpload');
             $filename = $image->getClientOriginalName();
             // $path = Storage::putFileAs('postsImages', $image, $filename);
             // $post->image_path = $path;
             $path= $request->file('fileToUpload')->storeAs('postsImages',$filename,'public');
-            $post->image_path = '/storage/'.$path;
+            $post->image_path =$path;
             $post->save();
         }
 
@@ -115,12 +113,12 @@ class PostController extends Controller
     {
     $post = Post::findOrFail($id);
     Post::destroy($id);
-    if ($post->image_path && Storage::exists($post->image_path)) {
+    if ($post->image_path && Storage::exists("public/". $post->image_path)) {
         // Storage::delete($post->image_path);
-        Storage::disk("public")->delete($post->image_path);
+        Storage::delete( "public/". $post->image_path);
     }
     return redirect()->route('posts.index');
-}
+    }
 
     public function removeOldPosts()
     {

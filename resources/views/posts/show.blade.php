@@ -72,6 +72,6 @@
         </form>
     </div> 
     {{-- @dd(asset($post->image_path)) --}}
-    <img src="{{asset($post->image_path)}}" alt="err" class="">
+    <img src="{{asset("/storage/". $post->image_path)}}" alt="err" class="">
 
 @endsection
