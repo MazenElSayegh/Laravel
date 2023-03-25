@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="text-center w-100">
-        <button type="button" class="mt-4 btn btn-success border border-dark"><a style="text-decoration: none; color:black" href="{{route('posts.create')}}">Create Post</a></button>
+        <button type="button" class="m-4 btn btn-success border border-dark"><a style="text-decoration: none; color:black" href="{{route('posts.create')}}">Create Post</a></button>
     </div>
     <table class="table">
         <thead>

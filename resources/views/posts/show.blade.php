@@ -23,6 +23,7 @@
             <h5 class="card-title">Created At: <span style="font-size: 18px">{{$post->created_at->format("Y-m-d")}}</span></h5>
         </div>
     </div>
+    <img src="{{asset("/storage/". $post->image_path)}}" alt="err" class="rounded-3" width="50%" style="position: relative; left:20vw; margin-top:10px;"><br>
 
     <div class="card" style="margin-top: 10px">
         <div class="card-header bg-success p-2 text-dark bg-opacity-50">
@@ -73,6 +74,6 @@
         </form>
     </div> 
     {{-- @dd(asset($post->image_path)) --}}
-    <img src="{{asset("/storage/". $post->image_path)}}" alt="err" class="">
+    {{-- <img src="{{asset("/storage/". $post->image_path)}}" alt="err" class="rounded float-start" width="500px"> --}}
 
 @endsection
