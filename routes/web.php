@@ -26,7 +26,7 @@ Route::get("/posts/removeOld",[PostController::class,"removeOldPosts"]);
 
 Route::resource('posts', PostController::class)->middleware('auth');
 
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Auth::routes();
 

@@ -8,12 +8,12 @@ use App\Models\Post;
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    public function store($id)
     {
-        // dd(request());
+        // dd(request(), $request);
         $user_id= request()->post_creator;
         $body= request()->body;
-        $id= request()->id;
+        // $id= request()->id;
         $post= Post::find($id);
         // dd($user_id,$body);
         $post->comments()->create([

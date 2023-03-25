@@ -28,7 +28,7 @@ class PostController extends Controller
         $users= User::all();
         // dd($user->name);
 
-        return view('posts.show', ['post' => $post], ['users'=>$users]);
+        return view('posts.show', ['post' => $post,'users'=>$users]);
     }
 
     public function create()

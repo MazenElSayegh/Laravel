@@ -54,7 +54,8 @@
         <div class="card-header">
             Add Comment
         </div>
-        <form action="{{route('comments.store',['id'=>$post['id']])}}" method="POST">
+        <form action="{{route('comments.store',$post['id'])}}" method="POST">
+            {{-- ['id'=>$post['id']] --}}
             @csrf
             <div class="mb-3" style="margin-top: 30px">
                 <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
