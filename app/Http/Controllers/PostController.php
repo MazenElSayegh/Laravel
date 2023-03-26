@@ -16,7 +16,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $allPosts = Post::paginate(5);
+        $allPosts = Post::with('user')->paginate(5);
         // dd($allPosts);
 
         return view('posts.index', ['posts' => $allPosts]);
